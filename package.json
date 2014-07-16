@@ -1,5 +1,5 @@
 {
-  "name": "gulp-javascript-stylus-sprite",
+  "name": "gulp-stylus-sprite",
   "version": "0.0.4",
   "description": "Sprites with stylus & spritesmith",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/iliakan/gulp-javascript-stylus-sprite"
+    "url": "https://github.com/iliakan/gulp-stylus-sprite"
   },
   "author": "Ilya Kantor",
   "license": "CC-BY 3.0",
   "bugs": {
-    "url": "https://github.com/iliakan/gulp-javascript-stylus-sprite/issues"
+    "url": "https://github.com/iliakan/gulp-stylus-sprite/issues"
   },
-  "homepage": "https://github.com/iliakan/gulp-javascript-stylus-sprite",
+  "homepage": "https://github.com/iliakan/gulp-stylus-sprite",
   "dependencies": {
     "event-stream": "^3.1.5",
     "gulp": "^3.8.6",
