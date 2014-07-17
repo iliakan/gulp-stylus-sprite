@@ -18,3 +18,6 @@ gulp.task('sprite', taskSprite({
 - `spritesWebRoot`: - path in CSS to sprite image will be `/img/dir.png`
 - `spritesWebRoot` - generated sprite images will be stored in this dir here.
 - `styleFsDir` - stylus file with sprite mixins and coords will be put here
+
+
+Thanks to @serheyshmyg for discussions and the draft version.
