@@ -34,7 +34,7 @@ module.exports = function(options) {
         var spriteData = gulp.src(path.join(dir.path, '*.{png,jpg,gif}'))
           // only make sprite if no newer file exist
           .pipe(gp.newer(path.join(spritesFsDir, imgName)))
-          .pipe(es.through(function (image) {
+          .pipe(es.through(function(image) {
             if (!logged) {
               gp.util.log("Making " + spriteName);
               logged = true;
@@ -48,7 +48,7 @@ module.exports = function(options) {
             cssName:     spriteName + '.styl',
             cssFormat:   'stylus',
             cssTemplate: path.join(__dirname, 'stylus.template.mustache'),
-            cssVarMap: function(sprite) {
+            cssVarMap:   function(sprite) {
               sprite.name = spriteName + '-' + sprite.name;
               sprite.image = sprite.image + '?time=' + time;
               anySprite = sprite;
@@ -56,23 +56,30 @@ module.exports = function(options) {
             }
           }));
 
-        spriteData.img.pipe(gulp.dest(spritesFsDir))
+        spriteData.img
+          .pipe(gp.ignore.exclude(function(file) {
+            return file.contents.length == 0;
+          }))
+          .pipe(gulp.dest(spritesFsDir))
           .on('end', function() {
-            spriteData.css.pipe(gp.util.buffer(function(err, files) {
+            spriteData.css
+              .pipe(gp.util.buffer(function(err, files) {
               if (err) return callback(err);
               var styl = files[0]; // always single file comes from css
-              if (!styl.contents.length) { // if no sprite is made (newer exists) then file is empty
-                // so we skip it
+
+              if (styl.contents.length == 0) {
                 return callback();
               }
 
+              // add full-image data
               styl.contents = new Buffer(styl.contents.toString() + "\n$" + spriteName + " = " +
                 anySprite.total_width + 'px ' + anySprite.total_height + 'px ' +
                 "'" + anySprite.image + "'");
-              // otherwise pass it down the stream
+
               callback(null, styl); // only one css-file
             }));
           });
+
       }))
       // mixin.styl will be always copied if no sprite is made, but that's a small file, perf penalty is small
 //      .pipe(gp.addSrc(path.join(__dirname, 'mixin.styl')))
