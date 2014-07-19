@@ -1,6 +1,6 @@
 {
   "name": "gulp-stylus-sprite",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Sprites with stylus & spritesmith",
   "main": "index.js",
   "scripts": {
