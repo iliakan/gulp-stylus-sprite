@@ -29,6 +29,8 @@ module.exports = function(options) {
 
         var logged = false;
 
+        var time = Date.now();
+        var anySprite;
         var spriteData = gulp.src(path.join(dir.path, '*.{png,jpg,gif}'))
           // only make sprite if no newer file exist
           .pipe(gp.newer(path.join(spritesFsDir, imgName)))
@@ -48,10 +50,9 @@ module.exports = function(options) {
             cssTemplate: path.join(__dirname, 'stylus.template.mustache'),
             cssVarMap: function(sprite) {
               sprite.name = spriteName + '-' + sprite.name;
+              sprite.image = sprite.image + '?time=' + time;
+              anySprite = sprite;
               return sprite;
-            },
-            cssOpts:     {
-              time: Date.now()
             }
           }));
 
@@ -64,13 +65,17 @@ module.exports = function(options) {
                 // so we skip it
                 return callback();
               }
+
+              styl.contents = new Buffer(styl.contents.toString() + "\n$" + spriteName + " = " +
+                anySprite.total_width + 'px ' + anySprite.total_height + 'px ' +
+                "'" + anySprite.image + "'");
               // otherwise pass it down the stream
               callback(null, styl); // only one css-file
             }));
           });
       }))
       // mixin.styl will be always copied if no sprite is made, but that's a small file, perf penalty is small
-      .pipe(gp.addSrc(path.join(__dirname, 'mixin.styl')))
+//      .pipe(gp.addSrc(path.join(__dirname, 'mixin.styl')))
       .pipe(gulp.dest(styleFsDir))
   };
 };
