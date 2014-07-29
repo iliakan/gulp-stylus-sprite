@@ -5,6 +5,7 @@ const spritesmith = require('gulp.spritesmith');
 const es = require('event-stream');
 const assert = require('assert');
 const fs = require('fs');
+const fse = require('fs-extra');
 
 module.exports = function(options) {
   const spritesSearchFsRoot = options.spritesSearchFsRoot; // where in FS to look for sprites
@@ -16,6 +17,9 @@ module.exports = function(options) {
   assert(spritesWebRoot);
   assert(spritesFsDir);
   assert(styleFsDir);
+
+  fse.ensureDirSync(spritesFsDir);
+  fse.ensureDirSync(styleFsDir);
 
   return function() {
 

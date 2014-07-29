@@ -1,6 +1,6 @@
 {
   "name": "gulp-stylus-sprite",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Sprites with stylus & spritesmith",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/iliakan/gulp-stylus-sprite",
   "dependencies": {
+    "fs-extra": "*",
     "event-stream": "^3.1.5",
     "gulp": "^3.8.6",
     "gulp-add-src": "^0.1.1",
