@@ -1,11 +1,10 @@
 const gulp = require('gulp');
 const path = require('path');
-const gp = require('gulp-load-plugins')({
-  config: path.join(__dirname, 'package.json')
-});
+const gp = require('gulp-load-plugins')();
 const spritesmith = require('gulp.spritesmith');
 const es = require('event-stream');
 const assert = require('assert');
+const fs = require('fs');
 
 module.exports = function(options) {
   const spritesSearchFsRoot = options.spritesSearchFsRoot; // where in FS to look for sprites
@@ -29,11 +28,18 @@ module.exports = function(options) {
 
         var logged = false;
 
+        // if .styl does not exist, use if for gp.newer (=force sprite regen)
+        // otherwise compare with sprite.png
+        var newerCompareDst = fs.existsSync(path.join(styleFsDir, spriteName + '.styl')) ?
+          path.join(spritesFsDir, imgName) :
+          path.join(styleFsDir, spriteName + '.styl');
+
+
         var time = Date.now();
         var anySprite;
         var spriteData = gulp.src(path.join(dir.path, '*.{png,jpg,gif}'))
           // only make sprite if no newer file exist
-          .pipe(gp.newer(path.join(spritesFsDir, imgName)))
+          .pipe(gp.newer(newerCompareDst))
           .pipe(es.through(function(image) {
             if (!logged) {
               gp.util.log("Making " + spriteName);
