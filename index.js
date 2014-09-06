@@ -12,6 +12,7 @@ module.exports = function(options) {
   const spritesWebRoot = options.spritesWebRoot; // CSS-path from CSS to a sprite
   const spritesFsDir = options.spritesFsDir; // where to write sprites
   const styleFsDir = options.styleFsDir; // where to write style
+  const addTime = options.addTime; // whether to add a ?time=<build time> param to the sprite img
 
   assert(spritesSearchFsRoot);
   assert(spritesWebRoot);
@@ -60,7 +61,7 @@ module.exports = function(options) {
             cssTemplate: path.join(__dirname, 'stylus.template.mustache'),
             cssVarMap:   function(sprite) {
               sprite.name = spriteName + '-' + sprite.name;
-              sprite.image = sprite.image + '?time=' + time;
+              if (addTime) sprite.image += '?time=' + time;
               anySprite = sprite;
               return sprite;
             }
